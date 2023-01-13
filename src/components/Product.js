@@ -2,12 +2,17 @@ import Image from "next/dist/client/image";
 import { useEffect, useState } from "react";
 import { StarIcon } from "@heroicons/react/solid";
 import Currency from "react-currency-formatter";
+import { useDispatch } from "react-redux";
+import { addToBasket } from "../slices/basketSlice";
 
 //最大值評分＆最小值評分
 const MAX_RATING = 5;
 const MIN_RATING = 1;
 
 const Product = ({ id, title, price, description, category, image }) => {
+	//發送對應的action到 Reducer
+	const dispatch = useDispatch();
+
 	//隨機五星評分
 	const rating =
 		Math.floor(Math.random() * (MAX_RATING - MIN_RATING + 1)) + MIN_RATING;
@@ -23,6 +28,21 @@ const Product = ({ id, title, price, description, category, image }) => {
 		}
 	}, []);
 
+	//每當點擊購物籃添加項目時觸發
+	const addItemToBasket = () => {
+		const product = {
+			id,
+			title,
+			price,
+			description,
+			category,
+			image,
+			hasPrime,
+		};
+
+		//將產品作為 action 發送到 redux store ... the basket slice
+		dispatch(addToBasket(product));
+	};
 	return (
 		<div className="relative flex flex-col m-5 bg-white z-30 p-10" key={id}>
 			{/* 類別 */}
@@ -49,7 +69,9 @@ const Product = ({ id, title, price, description, category, image }) => {
 				<img className="w-12" src="https://links.papareact.com/fdw" alt="" />
 				<p className="text-xs text-gray-500">FREE Next-day Delivery</p>
 			</div>
-			<button className="mt-auto botton">Add to Basket</button>
+			<button onClick={addItemToBasket} className="mt-auto button">
+				Add to Basket
+			</button>
 		</div>
 	);
 };

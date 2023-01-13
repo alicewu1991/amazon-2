@@ -1,17 +1,62 @@
-import Image from "next/image";
 import {
 	MenuIcon,
 	SearchIcon,
 	ShoppingCartIcon,
 } from "@heroicons/react/outline";
+import Image from "next/image";
+import auth from "../../firebase";
+import firebase from "firebase";
+import { useRouter } from "next/router";
+import { selectItems } from "../slices/basketSlice";
+import { useSelector } from "react-redux";
 
 function Header() {
+	const signIn = async () => {
+		auth
+			.signInWithRedirect(new firebase.auth.GoogleAuthProvider())
+			.then((result) => {
+				/** @type {firebase.auth.OAuthCredential} */
+				var credential = result.credential;
+
+				// This gives you a Google Access Token. You can use it to access the Google API.
+				var token = credential.accessToken;
+				// The signed-in user info.
+				var { displayName, email, Aa } = result.user;
+
+				console.log("user", displayName, email, Aa);
+
+				window.localStorage.setItem("user_name", displayName);
+				window.localStorage.setItem("user_email", email);
+				window.localStorage.setItem("user_token", Aa);
+
+				window.localStorage.removeItem("user_name");
+
+				// ...
+			})
+			.catch((error) => {
+				// Handle Errors here.
+				var errorCode = error.code;
+				var errorMessage = error.message;
+				// The email of the user's account used.
+				var email = error.email;
+				// The firebase.auth.AuthCredential type that was used.
+				var credential = error.credential;
+				// ...
+			});
+
+		return;
+	};
+	const router = useRouter();
+
+	const items = useSelector(selectItems);
+	//這裡的選擇項目指的是basketSlice
 	return (
 		<header>
 			{/*Top nav*/}
 			<div className=" bg-amazon_blue flex items-center p-1 flex-grow py-2">
 				<div className=" flex items-center flex-grow sm:flex-grow-0 p-2">
 					<Image
+						onClick={() => router.push("/")}
 						src="https://links.papareact.com/f90"
 						width={150}
 						height={40}
@@ -29,17 +74,23 @@ function Header() {
 				</div>
 				{/* Right */}
 				<div className="text-white flex items-center text-xs space-x-6 mx-6 whitespace-nowrap">
-					<div className=" link">
-						<p>Hello Alice Wu</p>
+					<div onClick={signIn} className="cursor-pointer link">
+						<p className="hover:underline">
+							{" "}
+							{signIn ? `Hello,${signIn.name}` : "Sing In"}
+						</p>
 						<p className="text-extrabold md:text-sm">Account & Lists</p>
 					</div>
 					<div className="link">
 						<p>Returns</p>
 						<p className="text-extrabold md:text-sm">& Orders</p>
 					</div>
-					<div className="relative link flex items-center">
+					<div
+						onClick={() => router.push("/checkout")}
+						className="relative link flex items-center"
+					>
 						<span className="absolute top-0 right-0 md:right-10 h-4 w-4 bg-yellow-400 text-center rounded-full text-black font-bold">
-							0
+							{items.length}
 						</span>
 
 						<ShoppingCartIcon className="h-10" />

@@ -1,21 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  items: [],
+	items: [],
 };
 
 export const basketSlice = createSlice({
-  name: "basket",
-  initialState,
-  reducers: {
-    addToBasket: (state, action) => {},
-    removeFromBasket: (state, action) => {},
-  },
+	name: "basket",
+	initialState,
+	reducers: {
+		//Actions
+		addToBasket: (state, action) => {
+			state.items = [...state.items, action.payload];
+			//...state.items,action.payload 保留當前內容,添加的項目是有效載荷
+		},
+		removeFromBasket: (state, action) => {},
+	},
 });
 
 export const { addToBasket, removeFromBasket } = basketSlice.actions;
 
-// Selectors - This is how we pull information from the Global store slice
 export const selectItems = (state) => state.basket.items;
 
 export default basketSlice.reducer;
