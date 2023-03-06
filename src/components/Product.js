@@ -5,6 +5,8 @@ import Currency from "react-currency-formatter";
 import { useDispatch } from "react-redux";
 import { addToBasket } from "../slices/basketSlice";
 
+let name = "alice";
+// print(name);
 //最大值評分＆最小值評分
 const MAX_RATING = 5;
 const MIN_RATING = 1;
@@ -40,7 +42,7 @@ const Product = ({ id, title, price, description, category, image }) => {
 			hasPrime,
 		};
 
-		//將產品作為 action 發送到 redux store ... the basket slice
+		//將產品作為 action 發送到 redux store ... the basketＳlice action.payload
 		dispatch(addToBasket(product));
 	};
 	return (
