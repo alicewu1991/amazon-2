@@ -7,8 +7,8 @@ import Image from "next/image";
 import auth from "../../firebase";
 import firebase from "firebase";
 import { useRouter } from "next/router";
-import { selectItems } from "../slices/basketSlice";
 import { useSelector } from "react-redux";
+import { selectItems } from "../slices/basketSlice";
 
 function Header() {
 	const signIn = async () => {
@@ -50,6 +50,7 @@ function Header() {
 
 	const items = useSelector(selectItems);
 	//這裡的選擇項目指的是basketSlice
+
 	return (
 		<header>
 			{/*Top nav*/}
@@ -91,6 +92,7 @@ function Header() {
 					>
 						<span className="absolute top-0 right-0 md:right-10 h-4 w-4 bg-yellow-400 text-center rounded-full text-black font-bold">
 							{items.length}
+							{/* 這裡的items是購物車內容從0變動成新增的數量 */}
 						</span>
 
 						<ShoppingCartIcon className="h-10" />
