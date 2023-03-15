@@ -2,6 +2,9 @@
 import Image from "next/image";
 import { StarIcon } from "@heroicons/react/solid";
 import Currency from "react-currency-formatter";
+import { useDispatch } from "react-redux";
+import { addToBasket, removeFromBasket } from "../slices/basketSlice";
+import Product from "./Product";
 function CheckoutProduct({
 	id,
 	title,
@@ -12,6 +15,29 @@ function CheckoutProduct({
 	hasPrime,
 	rating,
 }) {
+	const dispatch = useDispatch();
+
+	const addItemToBasket = () => {
+		const product = {
+			id,
+			title,
+			price,
+			description,
+			category,
+			image,
+			hasPrime,
+			rating,
+		};
+
+		//將項目推送到 redux
+		dispatch(addToBasket(Product));
+	};
+
+	const removeItemFromBasket = () => {
+		//從 redux 中刪除項目
+		dispatch(removeFromBasket({ id }));
+	};
+
 	return (
 		<div className="grid grid-cols-5">
 			<Image src={image} height={200} width={200} object-contain />
@@ -41,8 +67,12 @@ function CheckoutProduct({
 			</div>
 			{/* Right add/remove buttons */}
 			<div className="flex flex-col space-y-2 my-auto justify-self-end">
-				<button className="button mt-auto">Add to Basket</button>
-				<button className="button mt-auto">Remove from Basket</button>
+				<button className="button" onClick={addItemToBasket}>
+					Add to Basket
+				</button>
+				<button className="button" onClick={removeItemFromBasket}>
+					Remove from Basket
+				</button>
 			</div>
 		</div>
 	);
