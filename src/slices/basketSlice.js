@@ -10,6 +10,7 @@ export const basketSlice = createSlice({
 	reducers: {
 		//Actions
 		addToBasket: (state, action) => {
+			console.log("action.payload", action.payload);
 			state.items = [...state.items, action.payload];
 			//...state.items,action.payload 保留當前內容,添加的項目是有效載荷(payload)
 		},

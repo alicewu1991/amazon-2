@@ -4,7 +4,7 @@ import { StarIcon } from "@heroicons/react/solid";
 import Currency from "react-currency-formatter";
 import { useDispatch } from "react-redux";
 import { addToBasket, removeFromBasket } from "../slices/basketSlice";
-import Product from "./Product";
+
 function CheckoutProduct({
 	id,
 	title,
@@ -30,7 +30,7 @@ function CheckoutProduct({
 		};
 
 		//將項目推送到 redux
-		dispatch(addToBasket(Product));
+		dispatch(addToBasket(product));
 	};
 
 	const removeItemFromBasket = () => {

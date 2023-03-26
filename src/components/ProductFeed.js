@@ -11,6 +11,7 @@ function ProductFeed({ products }) {
 						({ id, title, price, description, category, image, hasPrime }) => (
 							<Product
 								key={id}
+								id={id}
 								title={title}
 								price={price}
 								description={description}
